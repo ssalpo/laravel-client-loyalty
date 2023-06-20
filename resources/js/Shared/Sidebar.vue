@@ -17,11 +17,27 @@
                     <li class="nav-item">
                         <Link
                             class="nav-link"
+                            :href="route('clients.index')"
+                            :class="{active: $page.component.startsWith('Clients')}"
+                        >
+                            <span class="nav-link-icon d-md-none d-lg-inline-block">
+                              <IconUsersGroup :size="24" stroke-width="1.5"/>
+                            </span>
+
+                            <span class="nav-link-title">
+                                Клиенты
+                            </span>
+                        </Link>
+                    </li>
+
+                    <li class="nav-item">
+                        <Link
+                            class="nav-link"
                             :href="route('users.index')"
                             :class="{active: $page.component.startsWith('Users')}"
                         >
                             <span class="nav-link-icon d-md-none d-lg-inline-block">
-                              <IconUsers :size="24" stroke-width="1.5"/>
+                              <IconUser :size="24" stroke-width="1.5"/>
                             </span>
 
                             <span class="nav-link-title">
@@ -50,13 +66,15 @@
 <script>
 import UserDropdown from "./UserDropdown.vue"
 import {Link} from "@inertiajs/inertia-vue3"
-import {IconUsers, IconBuilding} from "@tabler/icons-vue"
+import {IconUsersGroup, IconBuilding, IconUser, IconLogin} from "@tabler/icons-vue"
 
 export default {
     components: {
         Link,
         UserDropdown,
-        IconUsers,
+        IconLogin,
+        IconUser,
+        IconUsersGroup,
         IconBuilding
     },
     methods: {
