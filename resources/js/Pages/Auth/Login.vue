@@ -8,7 +8,7 @@
             <div class="text-center mb-4">
                 <h1 class="navbar-brand navbar-brand-autodark" style="font-size: 18px">
                     <IconBuilding :size="28" class="me-2" stroke-width="2" />
-                    Aklify
+                    Loyalty
                 </h1>
             </div>
             <div class="card card-md">
