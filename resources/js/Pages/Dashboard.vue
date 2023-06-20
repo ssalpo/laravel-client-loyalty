@@ -30,9 +30,9 @@
                     <tbody>
                     <tr v-for="point in points">
                         <td>{{ point.client.name }}</td>
-                        <td>{{ point.amount }}</td>
-                        <td>{{ point.sell_amount }}</td>
-                        <td>{{ point.percent }}%</td>
+                        <td>{{ numberFormat(point.amount) }}</td>
+                        <td>{{ numberFormat(point.sell_amount) }}</td>
+                        <td>{{ numberFormat(point.percent) }}%</td>
                         <td class="text-muted">
                             {{ point.created_at_formatted }}
                         </td>
@@ -58,8 +58,10 @@ import Card from "../Shared/Card.vue";
 import DeleteBtn from "../Shared/DeleteBtn.vue";
 import EditLinkBtn from "../Shared/EditLinkBtn.vue";
 import EmptyResult from "../Shared/EmptyResult.vue";
+import {numberFormat} from "../functions";
 
 export default {
+    methods: {numberFormat},
     components: {EmptyResult, EditLinkBtn, DeleteBtn, Card, PageWrapper, Head, Link},
     props: ['points']
 }
