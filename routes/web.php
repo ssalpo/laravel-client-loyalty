@@ -5,6 +5,7 @@ use App\Http\Controllers\AutocompleteController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PointController;
+use App\Http\Controllers\PointTransactionController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +15,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::resource('users', UserController::class);
     Route::resource('clients', ClientController::class);
     Route::resource('points', PointController::class);
+    Route::resource('point-transactions', PointTransactionController::class);
 });
 
 // Autocomplete routes

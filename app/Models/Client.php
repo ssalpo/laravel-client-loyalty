@@ -38,4 +38,9 @@ class Client extends Model
     {
         return $this->hasMany(Point::class);
     }
+
+    public function pointTransactions(): HasMany
+    {
+        return $this->hasMany(PointTransaction::class);
+    }
 }

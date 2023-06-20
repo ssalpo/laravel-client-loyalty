@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('clients', function (Blueprint $table) {
-            $table->double('total_points')->default(0);
+            $table->double('total_points', 4)->default(0);
         });
     }
 

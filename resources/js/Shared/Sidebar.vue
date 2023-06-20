@@ -29,6 +29,7 @@
                             </span>
                         </Link>
                     </li>
+
                     <li class="nav-item">
                         <Link
                             class="nav-link"
@@ -41,6 +42,22 @@
 
                             <span class="nav-link-title">
                                 История начислений
+                            </span>
+                        </Link>
+                    </li>
+
+                    <li class="nav-item">
+                        <Link
+                            class="nav-link"
+                            :href="route('point-transactions.index')"
+                            :class="{active: $page.component.startsWith('PointTransactions')}"
+                        >
+                            <span class="nav-link-icon d-md-none d-lg-inline-block">
+                              <IconArrowsTransferDown :size="24" stroke-width="1.5"/>
+                            </span>
+
+                            <span class="nav-link-title">
+                                История транзакций
                             </span>
                         </Link>
                     </li>
@@ -103,7 +120,8 @@ import {
     IconUsersGroup,
     IconBuilding,
     IconUser,
-    IconLogin
+    IconLogin,
+    IconArrowsTransferDown
 } from "@tabler/icons-vue"
 
 export default {
@@ -115,7 +133,8 @@ export default {
         IconLogin,
         IconUser,
         IconUsersGroup,
-        IconBuilding
+        IconBuilding,
+        IconArrowsTransferDown
     },
     methods: {
         logout() {

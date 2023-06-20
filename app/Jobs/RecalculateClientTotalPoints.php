@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Models\Client;
 use App\Models\Point;
+use App\Models\PointTransaction;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -37,7 +38,8 @@ class RecalculateClientTotalPoints implements ShouldQueue
         }
 
         $totalPoints = Point::whereClientId($this->clientId)->sum('amount');
+        $totalPointTransactions = PointTransaction::whereClientId($this->clientId)->sum('amount');
 
-        $client->update(['total_points' => $totalPoints]);
+        $client->update(['total_points' => $totalPoints - $totalPointTransactions]);
     }
 }

@@ -1,9 +1,9 @@
 <template>
     <PageWrapper
-        header-title="История начисленных бонусов"
+        header-title="История транзакций"
     >
         <card without-body>
-            <EmptyResult v-if="!points.data.length" />
+            <EmptyResult v-if="!pointTransactions.data.length" />
 
             <div class="table-responsive" v-else>
                 <table class="table table-vcenter text-nowrap card-table">
@@ -12,28 +12,26 @@
                         <th>Клиент</th>
                         <th>Бонус</th>
                         <th>Сумма покупки</th>
-                        <th>Процент</th>
                         <th>Дата создания</th>
                         <th width="120"></th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr v-for="point in points.data">
-                        <td>{{ point.client.name }}</td>
-                        <td>{{ point.amount }}</td>
-                        <td>{{ point.sell_amount }}</td>
-                        <td>{{ point.percent }}%</td>
+                    <tr v-for="pointTransaction in pointTransactions.data">
+                        <td>{{ pointTransaction.client.name }}</td>
+                        <td>{{ pointTransaction.amount }}</td>
+                        <td>{{ pointTransaction.sell_amount }}</td>
                         <td class="text-muted">
-                            {{ point.created_at_formatted }}
+                            {{ pointTransaction.created_at_formatted }}
                         </td>
                         <td class="text-end">
                             <EditLinkBtn
-                                :url="route('points.edit', point.id)"
+                                :url="route('point-transactions.edit', pointTransaction.id)"
                                 class="me-2"
                             />
 
                             <delete-btn
-                                :url="route('points.destroy', point.id)"
+                                :url="route('point-transactions.destroy', pointTransaction.id)"
                             />
                         </td>
                     </tr>
@@ -41,8 +39,8 @@
                 </table>
             </div>
 
-            <template #cardFooter v-if="points.links.length > 3">
-                <Pagination class="float-end" :links="points.links"/>
+            <template #cardFooter v-if="pointTransactions.links.length > 3">
+                <Pagination class="float-end" :links="pointTransactions.links"/>
             </template>
         </card>
 
@@ -61,6 +59,6 @@ import Pagination from "../../Shared/Pagination.vue";
 
 export default {
     components: {Pagination, EmptyResult, IconCirclePlus, EditLinkBtn, DeleteBtn, Card, PageWrapper, Link},
-    props: ['points']
+    props: ['pointTransactions']
 }
 </script>
