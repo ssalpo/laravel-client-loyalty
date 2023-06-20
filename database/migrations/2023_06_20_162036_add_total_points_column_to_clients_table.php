@@ -11,13 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('clients', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('phone');
-            $table->date('birthday')->nullable();
-            $table->timestamps();
-            $table->softDeletes();
+        Schema::table('clients', function (Blueprint $table) {
+            $table->double('total_points')->default(0);
         });
     }
 
@@ -26,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('clients');
+        Schema::table('clients', function (Blueprint $table) {
+            $table->dropColumn(['total_points']);
+        });
     }
 };

@@ -13,7 +13,7 @@ class UserService
 
     public function update(int $id, array $data): User
     {
-        $user = User::myCompany()->findOrFail($id);
+        $user = User::findOrFail($id);
 
         $user->update($data);
 
@@ -22,7 +22,7 @@ class UserService
 
     public function delete(int $id): User
     {
-        $user = User::myCompany()->findOrFail($id);
+        $user = User::findOrFail($id);
 
         $user->delete();
 

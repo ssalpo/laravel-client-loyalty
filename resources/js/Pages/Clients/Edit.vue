@@ -26,8 +26,8 @@
 
                 <div class="col col-sm-6 offset-sm-3 mb-3">
                     <AirDatePicker
-                        label="Дата прихода"
-                        placeholder="Выберите дату прихода"
+                        label="Дата рождения"
+                        placeholder="Выберите дату рождения"
                         parse-format="dd-MM-yyyy"
                         :invalid-text="form.errors.birthday"
                         :as-modal="isMobile"

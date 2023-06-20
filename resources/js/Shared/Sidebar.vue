@@ -17,6 +17,37 @@
                     <li class="nav-item">
                         <Link
                             class="nav-link"
+                            :href="route('dashboard.index')"
+                            :class="{active: $page.component.startsWith('Dashboard')}"
+                        >
+                            <span class="nav-link-icon d-md-none d-lg-inline-block">
+                              <IconHome :size="24" stroke-width="1.5"/>
+                            </span>
+
+                            <span class="nav-link-title">
+                                Дашборд
+                            </span>
+                        </Link>
+                    </li>
+                    <li class="nav-item">
+                        <Link
+                            class="nav-link"
+                            :href="route('points.index')"
+                            :class="{active: $page.component.startsWith('Points')}"
+                        >
+                            <span class="nav-link-icon d-md-none d-lg-inline-block">
+                              <IconListCheck :size="24" stroke-width="1.5"/>
+                            </span>
+
+                            <span class="nav-link-title">
+                                История начислений
+                            </span>
+                        </Link>
+                    </li>
+
+                    <li class="nav-item">
+                        <Link
+                            class="nav-link"
                             :href="route('clients.index')"
                             :class="{active: $page.component.startsWith('Clients')}"
                         >
@@ -66,12 +97,21 @@
 <script>
 import UserDropdown from "./UserDropdown.vue"
 import {Link} from "@inertiajs/inertia-vue3"
-import {IconUsersGroup, IconBuilding, IconUser, IconLogin} from "@tabler/icons-vue"
+import {
+    IconHome,
+    IconListCheck,
+    IconUsersGroup,
+    IconBuilding,
+    IconUser,
+    IconLogin
+} from "@tabler/icons-vue"
 
 export default {
     components: {
         Link,
         UserDropdown,
+        IconHome,
+        IconListCheck,
         IconLogin,
         IconUser,
         IconUsersGroup,

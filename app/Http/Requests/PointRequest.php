@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UserRequest extends FormRequest
+class PointRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,9 +22,16 @@ class UserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|min:1|max:255',
-            'username' => 'required|min:1|max:40',
-            'password' => 'nullable|min:1|max:40',
+            'client_id' => 'required|exists:clients,id',
+            'percent' => 'required',
+            'sell_amount' => 'required|regex:/^\d+(\.\d{1,2})?$/|gt:0',
         ];
+    }
+
+    public function prepareForValidation()
+    {
+        return $this->merge([
+            'percent' => option('default_percent')
+        ]);
     }
 }

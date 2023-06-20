@@ -20,7 +20,6 @@ class UserController extends Controller
     public function index()
     {
         $users = User::orderBy('created_at', 'DESC')
-            ->myCompany()
             ->get();
 
         return inertia('Users/Index', compact('users'));
@@ -42,7 +41,7 @@ class UserController extends Controller
 
     public function edit(int $id)
     {
-        $user = User::myCompany()->findOrFail($id);
+        $user = User::findOrFail($id);
 
         return inertia('Users/Edit', compact('user'));
     }

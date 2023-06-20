@@ -1,10 +1,51 @@
 <template>
-    <PageWrapper
-        header-title="Дашборд"
-    >
+    <PageWrapper>
+        <div>
+            <Link class="btn btn-lg btn-outline-primary mb-3" :href="route('points.create')">
+                Начислить бонус
+            </Link>
+
+            <Link class="btn btn-lg btn-outline-danger mb-3 ms-4">
+                Использовать бонус
+            </Link>
+        </div>
+
+        <card
+            without-body
+            card-title="Начислено бонусов за сегодня"
+        >
+            <EmptyResult v-if="!points.length" />
+
+            <div class="table-responsive" v-else>
+                <table class="table table-vcenter text-nowrap card-table">
+                    <thead>
+                    <tr>
+                        <th>Клиент</th>
+                        <th>Бонус</th>
+                        <th>Сумма покупки</th>
+                        <th>Процент</th>
+                        <th>Дата создания</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="point in points">
+                        <td>{{ point.client.name }}</td>
+                        <td>{{ point.amount }}</td>
+                        <td>{{ point.sell_amount }}</td>
+                        <td>{{ point.percent }}%</td>
+                        <td class="text-muted">
+                            {{ point.created_at_formatted }}
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </card>
+
         <card
             class="mt-3"
-            card-title="Дашборд"
+            card-title="Использовано бонусов за сегодня"
         >
 
         </card>
@@ -14,8 +55,12 @@
 import {Head, Link} from "@inertiajs/inertia-vue3";
 import PageWrapper from "../Shared/PageWrapper.vue";
 import Card from "../Shared/Card.vue";
+import DeleteBtn from "../Shared/DeleteBtn.vue";
+import EditLinkBtn from "../Shared/EditLinkBtn.vue";
+import EmptyResult from "../Shared/EmptyResult.vue";
 
 export default {
-    components: {Card, PageWrapper, Head, Link}
+    components: {EmptyResult, EditLinkBtn, DeleteBtn, Card, PageWrapper, Head, Link},
+    props: ['points']
 }
 </script>

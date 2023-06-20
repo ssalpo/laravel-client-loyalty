@@ -24,7 +24,7 @@ class ClientRequest extends FormRequest
     {
         return [
             'name' => 'required|min:2|max:255',
-            'phone' => 'required|min:2|max:255',
+            'phone' => 'required|min:2|max:255|unique:clients,phone,' . $this->client,
             'birthday' => 'nullable|date_format:Y-m-d',
         ];
     }

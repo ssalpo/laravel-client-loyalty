@@ -27,7 +27,6 @@ class User extends Authenticatable
         'email',
         'password',
         'is_active',
-        'company_id',
     ];
 
     /**
@@ -59,10 +58,5 @@ class User extends Authenticatable
         if($value) {
             $this->attributes['password'] = Hash::make($value);
         }
-    }
-
-    public function company()
-    {
-        return $this->belongsTo(Company::class);
     }
 }
