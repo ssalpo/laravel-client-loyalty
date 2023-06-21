@@ -2,38 +2,53 @@
 
 namespace App\Services;
 
-use App\Jobs\RecalculateClientTotalPoints;
 use App\Models\Point;
+use App\Notifications\PointAdd;
+use Illuminate\Support\Facades\DB;
 
 class PointService
 {
     public function store(array $data)
     {
-        $point = Point::create(
-            $this->calculateAmount($data)
-        );
+        return DB::transaction(function () use ($data) {
+            $point = Point::create(
+                $this->calculateAmount($data)
+            );
 
-        RecalculateClientTotalPoints::dispatch($point, true);
+            $client = (new ClientService)->recalculateTotalPoints($point->client_id);
 
-        return $point;
+            $client->notify(new PointAdd($point, $client->total_points));
+
+            return $point;
+        });
     }
 
     public function update(int $id, array $data)
     {
-        $point = Point::findOrFail($id);
+        return DB::transaction(function () use ($id, $data) {
+            $point = Point::findOrFail($id);
 
-        $data['percent'] = $point->percent;
+            $data['percent'] = $point->percent;
 
-        $point->update($this->calculateAmount($data));
+            $point->update($this->calculateAmount($data));
 
-        RecalculateClientTotalPoints::dispatch($point);
+            (new ClientService)->recalculateTotalPoints($point->client_id);
 
-        return $point;
+            return $point;
+        });
     }
 
     public function destroy(int $id)
     {
-        return Point::findOrFail($id)->delete();
+        return DB::transaction(function () use ($id) {
+            $point = Point::findOrFail($id);
+
+            $point->delete();
+
+            (new ClientService)->recalculateTotalPoints($point->client_id);
+
+            return $point;
+        });
     }
 
     private function calculateAmount(array $data): array

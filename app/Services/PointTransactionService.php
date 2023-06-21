@@ -2,9 +2,9 @@
 
 namespace App\Services;
 
-use App\Jobs\RecalculateClientTotalPoints;
 use App\Models\Client;
 use App\Models\PointTransaction;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 
 class PointTransactionService
@@ -13,11 +13,13 @@ class PointTransactionService
     {
         $this->validateTransaction($data);
 
-        $pointTransaction = PointTransaction::create($data);
+        return DB::transaction(function () use ($data) {
+            $pointTransaction = PointTransaction::create($data);
 
-        RecalculateClientTotalPoints::dispatch($data['client_id']);
+            (new ClientService)->recalculateTotalPoints($pointTransaction->client_id);
 
-        return $pointTransaction;
+            return $pointTransaction;
+        });
     }
 
     public function update(int $id, array $data): PointTransaction
@@ -26,14 +28,24 @@ class PointTransactionService
 
         $this->validateTransaction($data);
 
-        $pointTransaction->update($data);
+        return DB::transaction(function () use ($pointTransaction, $data) {
+            $pointTransaction->update($data);
 
-        return $pointTransaction;
+            (new ClientService)->recalculateTotalPoints($pointTransaction->client_id);
+
+            return $pointTransaction;
+        });
     }
 
     public function destroy(int $id): bool
     {
-        return PointTransaction::findOrFail($id)->delete();
+        return DB::transaction(function () use ($id) {
+            $pointTransaction = PointTransaction::findOrFail($id)->delete();
+
+            (new ClientService)->recalculateTotalPoints($pointTransaction->client_id);
+
+            return $pointTransaction;
+        });
     }
 
     private function validateTransaction(array $data): void

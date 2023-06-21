@@ -3,11 +3,13 @@
 namespace App\Services;
 
 use App\Models\Client;
+use App\Models\Point;
+use App\Models\PointTransaction;
 use App\Notifications\SendBirthdayGift;
 
 class ClientService
 {
-    public function store(array $data)
+    public function store(array $data): Client
     {
         return Client::create($data);
     }
@@ -21,7 +23,7 @@ class ClientService
         return $client;
     }
 
-    public function delete(int $id)
+    public function delete(int $id): Client
     {
         $client = Client::findOrFail($id);
 
@@ -30,7 +32,7 @@ class ClientService
         return $client;
     }
 
-    public function sendBirthdayGift()
+    public function sendBirthdayGift(): void
     {
         $clients = Client::hasTodayBirthday()->get();
 
@@ -44,5 +46,16 @@ class ClientService
 
             $client->notify(new SendBirthdayGift($template));
         }
+    }
+
+    public function recalculateTotalPoints(int $id): Client
+    {
+        $client = Client::findOrFail($id);
+        $totalPoints = Point::whereClientId($id)->sum('amount');
+        $totalPointTransactions = PointTransaction::whereClientId($id)->sum('amount');
+
+        $client->update(['total_points' => $totalPoints - $totalPointTransactions]);
+
+        return $client;
     }
 }
