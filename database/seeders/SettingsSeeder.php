@@ -13,7 +13,9 @@ class SettingsSeeder extends Seeder
     public function run(): void
     {
         option([
-            'default_percent' => 0.3
+            'default_percent' => 0.3,
+            'send_birthday_gift_time' => '8:00',
+            'birthday_template' => 'Уважаемый #name#, в честь вашего дня рождения, дарим подарок на любые ваши покупки.'
         ]);
     }
 }
