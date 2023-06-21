@@ -6,6 +6,7 @@ use App\Models\Client;
 use App\Models\PointTransaction;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
+use App\Notifications\PointTransaction as PointTransactionNotification;
 
 class PointTransactionService
 {
@@ -16,7 +17,11 @@ class PointTransactionService
         return DB::transaction(function () use ($data) {
             $pointTransaction = PointTransaction::create($data);
 
-            (new ClientService)->recalculateTotalPoints($pointTransaction->client_id);
+            $client = (new ClientService)->recalculateTotalPoints($pointTransaction->client_id);
+
+            $client->notify(
+                new PointTransactionNotification($pointTransaction, $client->total_points)
+            );
 
             return $pointTransaction;
         });
