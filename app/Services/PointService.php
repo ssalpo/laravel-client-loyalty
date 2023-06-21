@@ -13,7 +13,7 @@ class PointService
             $this->calculateAmount($data)
         );
 
-        RecalculateClientTotalPoints::dispatch($point->client_id);
+        RecalculateClientTotalPoints::dispatch($point, true);
 
         return $point;
     }
@@ -26,7 +26,7 @@ class PointService
 
         $point->update($this->calculateAmount($data));
 
-        RecalculateClientTotalPoints::dispatch($point->client_id);
+        RecalculateClientTotalPoints::dispatch($point);
 
         return $point;
     }

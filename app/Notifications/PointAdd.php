@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use App\Models\Point;
 use App\Notifications\Channels\OsonSms\OsonSmsChannel;
 use App\Notifications\Channels\OsonSms\OsonSmsMessage;
 use Illuminate\Bus\Queueable;
@@ -9,7 +10,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class SendBirthdayGift extends Notification implements ShouldQueue
+class PointAdd extends Notification implements ShouldQueue
 {
     use Queueable;
 
@@ -17,7 +18,8 @@ class SendBirthdayGift extends Notification implements ShouldQueue
      * Create a new notification instance.
      */
     public function __construct(
-        public string $template
+        public Point $point,
+        public float $totalPoints
     )
     {
         //
@@ -35,8 +37,10 @@ class SendBirthdayGift extends Notification implements ShouldQueue
 
     public function toOsonSms(object $notifiable): OsonSmsMessage
     {
+        $content = sprintf('Вам начислено %.2f бонусов. Баланс: %.2f', $this->point->amount, $this->totalPoints);
+
         return (new OsonSmsMessage)
-            ->content($this->template)
+            ->content($content)
             ->to($notifiable->phone);
     }
 }

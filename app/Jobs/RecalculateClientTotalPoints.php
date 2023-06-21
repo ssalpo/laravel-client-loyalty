@@ -5,6 +5,7 @@ namespace App\Jobs;
 use App\Models\Client;
 use App\Models\Point;
 use App\Models\PointTransaction;
+use App\Notifications\PointAdd;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -20,7 +21,8 @@ class RecalculateClientTotalPoints implements ShouldQueue
      * Create a new job instance.
      */
     public function __construct(
-        public int $clientId
+        public Point $point,
+        public bool  $shouldNotifyToClient = false
     )
     {
         //
@@ -31,15 +33,19 @@ class RecalculateClientTotalPoints implements ShouldQueue
      */
     public function handle(): void
     {
-        $client = Client::find($this->clientId);
+        $client = Client::find($this->point->client_id);
 
         if (!$client) {
             return;
         }
 
-        $totalPoints = Point::whereClientId($this->clientId)->sum('amount');
-        $totalPointTransactions = PointTransaction::whereClientId($this->clientId)->sum('amount');
+        $totalPoints = Point::whereClientId($this->point->client_id)->sum('amount');
+        $totalPointTransactions = PointTransaction::whereClientId($this->point->client_id)->sum('amount');
 
         $client->update(['total_points' => $totalPoints - $totalPointTransactions]);
+
+        if ($this->shouldNotifyToClient) {
+            $client->notify(new PointAdd($this->point, $client->total_points));
+        }
     }
 }

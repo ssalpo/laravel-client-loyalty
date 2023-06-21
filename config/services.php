@@ -32,7 +32,8 @@ return [
     ],
 
     'sms' => [
-        'sender' => env('SMS_SENDER')
+        'sender' => env('SMS_SENDER'),
+        'enabled' => env('SMS_ENABLED'),
     ],
 
     'osonsms' => [
