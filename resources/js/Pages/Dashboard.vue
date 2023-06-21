@@ -1,5 +1,7 @@
 <template>
-    <PageWrapper>
+    <PageWrapper
+        meta-title="Дашборд"
+    >
         <div>
             <Link class="btn btn-lg btn-outline-primary mb-3" :href="route('points.create')">
                 Начислить бонус
