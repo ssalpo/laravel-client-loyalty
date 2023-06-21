@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\AutocompleteController;
+use App\Http\Controllers\BulkMessageController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PointController;
@@ -16,6 +17,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::resource('clients', ClientController::class);
     Route::resource('points', PointController::class);
     Route::resource('point-transactions', PointTransactionController::class);
+
+    Route::post('/bulk-messages/{bulkMessage}/mark-as-sending', [BulkMessageController::class, 'markAsSending'])->name('bulk-messages.mark-as-sending');
+    Route::post('/bulk-messages/{bulkMessage}/mark-as-cancel', [BulkMessageController::class, 'markAsCancel'])->name('bulk-messages.mark-as-cancel');
+    Route::resource('bulk-messages', BulkMessageController::class);
 });
 
 // Autocomplete routes

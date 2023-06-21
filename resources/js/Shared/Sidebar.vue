@@ -65,6 +65,22 @@
                     <li class="nav-item">
                         <Link
                             class="nav-link"
+                            :href="route('bulk-messages.index')"
+                            :class="{active: $page.component.startsWith('BulkMessages')}"
+                        >
+                            <span class="nav-link-icon d-md-none d-lg-inline-block">
+                              <IconMailShare :size="24" stroke-width="1.5"/>
+                            </span>
+
+                            <span class="nav-link-title">
+                                Рассылка СМС
+                            </span>
+                        </Link>
+                    </li>
+
+                    <li class="nav-item">
+                        <Link
+                            class="nav-link"
                             :href="route('clients.index')"
                             :class="{active: $page.component.startsWith('Clients')}"
                         >
@@ -116,6 +132,7 @@ import UserDropdown from "./UserDropdown.vue"
 import {Link} from "@inertiajs/inertia-vue3"
 import {
     IconHome,
+    IconMailShare,
     IconListCheck,
     IconUsersGroup,
     IconBuilding,
@@ -129,6 +146,7 @@ export default {
         Link,
         UserDropdown,
         IconHome,
+        IconMailShare,
         IconListCheck,
         IconLogin,
         IconUser,
