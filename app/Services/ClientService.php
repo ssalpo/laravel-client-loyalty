@@ -54,7 +54,7 @@ class ClientService
         $totalPoints = Point::whereClientId($id)->sum('amount');
         $totalPointTransactions = PointTransaction::whereClientId($id)->sum('amount');
 
-        $client->update(['total_points' => $totalPoints - $totalPointTransactions]);
+        $client->update(['total_points' => round($totalPoints - $totalPointTransactions, 2)]);
 
         return $client;
     }
