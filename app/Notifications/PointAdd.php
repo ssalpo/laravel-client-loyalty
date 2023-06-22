@@ -37,7 +37,7 @@ class PointAdd extends Notification implements ShouldQueue
 
     public function toOsonSms(object $notifiable): OsonSmsMessage
     {
-        $content = sprintf('Вам начислено %.2f бонусов. Баланс: %.2f', $this->point->amount, $this->totalPoints);
+        $content = sprintf('Вам начислено %s бонусов. Баланс: %s', $this->point->amount, $this->totalPoints);
 
         return (new OsonSmsMessage)
             ->content($content)

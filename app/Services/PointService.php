@@ -55,7 +55,7 @@ class PointService
     {
         $percent = ($data['percent'] ?? option('default_percent'));
 
-        $data['amount'] = $data['sell_amount'] * ($percent / 100);
+        $data['amount'] = round($data['sell_amount'] * ($percent / 100), 2);
 
         return $data;
     }
