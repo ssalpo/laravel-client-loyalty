@@ -18,16 +18,6 @@ class OsonSmsChannel
             $message = new OsonSmsMessage($message);
         }
 
-        if (config('services.sms.enabled')) {
-            (new OsonSmsSenderService)->send($message->to, $message->content);
-        } else {
-            logger()?->info(
-                sprintf(
-                    'Отправлено СМС: \n Отправитель: %s \n Сообщение: %s',
-                    $message->to,
-                    $message->content
-                )
-            );
-        }
+        (new OsonSmsSenderService)->send($message->to, $message->content);
     }
 }
