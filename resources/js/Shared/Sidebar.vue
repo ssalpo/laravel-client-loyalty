@@ -110,6 +110,22 @@
                         </Link>
                     </li>
 
+                    <li class="nav-item">
+                        <Link
+                            class="nav-link"
+                            :href="route('settings.edit')"
+                            :class="{active: $page.component.startsWith('Settings')}"
+                        >
+                            <span class="nav-link-icon d-md-none d-lg-inline-block">
+                              <IconAdjustmentsHorizontal :size="24" stroke-width="1.5"/>
+                            </span>
+
+                            <span class="nav-link-title">
+                                Настройки
+                            </span>
+                        </Link>
+                    </li>
+
                     <li class="nav-item d-inline-flex d-sm-none">
                         <a href="#" @click.prevent="logout" class="nav-link">
                             <span class="nav-link-icon d-md-none d-lg-inline-block">
@@ -138,7 +154,8 @@ import {
     IconBuilding,
     IconUser,
     IconLogin,
-    IconArrowsTransferDown
+    IconArrowsTransferDown,
+    IconAdjustmentsHorizontal,
 } from "@tabler/icons-vue"
 
 export default {
@@ -152,7 +169,8 @@ export default {
         IconUser,
         IconUsersGroup,
         IconBuilding,
-        IconArrowsTransferDown
+        IconArrowsTransferDown,
+        IconAdjustmentsHorizontal,
     },
     methods: {
         logout() {
