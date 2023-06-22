@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('points', function (Blueprint $table) {
             $table->id();
             $table->foreignId('client_id')->constrained();
-            $table->double('amount', 4);
-            $table->double('sell_amount', 4)->comment('Сумма покупки');
+            $table->double('amount', 2);
+            $table->double('sell_amount', 2)->comment('Сумма покупки');
             $table->double('percent', 2);
             $table->timestamps();
             $table->softDeletes();
