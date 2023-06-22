@@ -18,7 +18,8 @@ class Client extends Model
         'name',
         'phone',
         'birthday',
-        'total_points'
+        'total_points',
+        'is_sms_receive'
     ];
 
     protected $casts = [
@@ -52,5 +53,10 @@ class Client extends Model
     public function pointTransactions(): HasMany
     {
         return $this->hasMany(PointTransaction::class);
+    }
+
+    public function markAsSmsReceive()
+    {
+        return $this->update(['is_sms_receive' => true]);
     }
 }

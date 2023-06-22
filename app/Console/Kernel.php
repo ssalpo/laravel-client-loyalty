@@ -13,6 +13,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule): void
     {
          $schedule->command('loyalty:send-birthday-gift')->dailyAt(option('send_birthday_gift_time'));
+         $schedule->command('loyalty:send-bulk-message-for-clients')->everyThreeMinutes();
     }
 
     /**

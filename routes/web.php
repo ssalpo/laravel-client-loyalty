@@ -18,8 +18,12 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::resource('points', PointController::class);
     Route::resource('point-transactions', PointTransactionController::class);
 
-    Route::post('/bulk-messages/{bulkMessage}/mark-as-sending', [BulkMessageController::class, 'markAsSending'])->name('bulk-messages.mark-as-sending');
-    Route::post('/bulk-messages/{bulkMessage}/mark-as-cancel', [BulkMessageController::class, 'markAsCancel'])->name('bulk-messages.mark-as-cancel');
+    Route::group(['prefix' => '/bulk-messages/{bulkMessage}/'], function () {
+        Route::post('repeat-sending', [BulkMessageController::class, 'repeatSending'])->name('bulk-messages.repeat-sending');
+        Route::post('mark-as-sending', [BulkMessageController::class, 'markAsSending'])->name('bulk-messages.mark-as-sending');
+        Route::post('mark-as-cancel', [BulkMessageController::class, 'markAsCancel'])->name('bulk-messages.mark-as-cancel');
+    });
+
     Route::resource('bulk-messages', BulkMessageController::class);
 });
 

@@ -6,7 +6,6 @@ use App\Http\Requests\BulkMessageRequest;
 use App\Models\BulkMessage;
 use App\Services\BulkMessageService;
 use App\Services\Toast;
-use Illuminate\Http\Request;
 
 class BulkMessageController extends Controller
 {
@@ -17,7 +16,9 @@ class BulkMessageController extends Controller
         $statusLabels = BulkMessage::STATUS_LABELS;
         $statusBadgeColors = BulkMessage::STATUS_BADGE_COLORS;
 
-        return inertia('BulkMessages/Index', compact('bulkMessages', 'statusLabels', 'statusBadgeColors'));
+        $hasAnySendingProcess = BulkMessage::hasAnySendingProcess();
+
+        return inertia('BulkMessages/Index', compact('bulkMessages', 'statusLabels', 'statusBadgeColors', 'hasAnySendingProcess'));
     }
 
     public function create()
@@ -59,15 +60,43 @@ class BulkMessageController extends Controller
 
     public function markAsSending(int $id, BulkMessageService $bulkMessageService)
     {
-        $bulkMessageService->markAsSending($id);
+        $this->validateAlreadySendingProcess(
+            $id,
+            fn() => $bulkMessageService->markAsSending($id)
+        );
 
         return back();
     }
 
     public function markAsCancel(int $id, BulkMessageService $bulkMessageService)
     {
-        $bulkMessageService->markAsCancel($id);
+        $this->validateAlreadySendingProcess(
+            $id,
+            fn() => $bulkMessageService->markAsCancel($id)
+        );
 
         return back();
+    }
+
+    public function repeatSending(int $id, BulkMessageService $bulkMessageService)
+    {
+        $this->validateAlreadySendingProcess(
+            $id,
+            fn($id) => $bulkMessageService->repeatSending($id)
+        );
+
+        return back();
+    }
+
+    private function validateAlreadySendingProcess(?int $id, callable $callback): void
+    {
+        $hasProcess = BulkMessage::hasAnySendingProcess($id);
+
+        if (!$hasProcess) {
+            $callback();
+            return;
+        }
+
+        Toast::error('У вас уже имеется запущенный процесс отправки СМС.');
     }
 }

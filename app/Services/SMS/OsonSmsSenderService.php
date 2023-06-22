@@ -12,6 +12,15 @@ class OsonSmsSenderService implements SMSSenderInterface
      */
     public function send(string $phoneNumber, string $template): bool
     {
+        if (!config('services.sms.enabled')) {
+            logger()?->info(implode(';', [
+                $phoneNumber,
+                $template
+            ]));
+
+            return true;
+        }
+
         $params = $this->prepareSendSmsParams(
             $phoneNumber,
             $template
@@ -33,6 +42,10 @@ class OsonSmsSenderService implements SMSSenderInterface
      */
     public function hasBalance(): bool
     {
+        if (!config('services.sms.enabled')) {
+            return true;
+        }
+
         $params = $this->prepareCheckBalanceParams();
 
         $response = Http::get(

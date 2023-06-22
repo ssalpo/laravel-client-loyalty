@@ -17,6 +17,7 @@ return new class extends Migration
             $table->text('content')->nullable();
             $table->integer('total_received')->default(0);
             $table->tinyInteger('status')->default(\App\Models\BulkMessage::STATUS_DRAFT);
+            $table->text('send_error_message')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

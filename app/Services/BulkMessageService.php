@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use App\Models\BulkMessage;
+use App\Models\Client;
+use Illuminate\Support\Facades\DB;
 
 class BulkMessageService
 {
@@ -13,7 +15,7 @@ class BulkMessageService
 
     public function update(int $id, array $data): BulkMessage
     {
-        $bulkMessage = BulkMessage::findOrFail($id);
+        $bulkMessage = BulkMessage::notSending()->findOrFail($id);
 
         $bulkMessage->update($data);
 
@@ -22,7 +24,7 @@ class BulkMessageService
 
     public function delete(int $id): BulkMessage
     {
-        $bulkMessage = BulkMessage::findOrFail($id);
+        $bulkMessage = BulkMessage::notSending()->findOrFail($id);
 
         $bulkMessage->delete();
 
@@ -31,15 +33,30 @@ class BulkMessageService
 
     public function markAsSending(int $id): void
     {
-        $bulkMessage = BulkMessage::where('status', '<>', BulkMessage::STATUS_SENDING)->findOrFail($id);
+        DB::transaction(static function () use ($id) {
+            $bulkMessage = BulkMessage::notSending()->findOrFail($id);
 
-        $bulkMessage->update(['status' => BulkMessage::STATUS_SENDING]);
+            $bulkMessage->update([
+                'status' => BulkMessage::STATUS_SENDING,
+                'total_received' => 0,
+                'send_error_message' => null
+            ]);
+
+            Client::query()->update(['is_sms_receive' => false]);
+        });
     }
 
     public function markAsCancel(int $id): void
     {
-        $bulkMessage = BulkMessage::whereStatus(BulkMessage::STATUS_SENDING)->findOrFail($id);
+        $bulkMessage = BulkMessage::sending()->findOrFail($id);
 
         $bulkMessage->update(['status' => BulkMessage::STATUS_CANCELED]);
+    }
+
+    public function repeatSending(int $id): void
+    {
+        $bulkMessage = BulkMessage::sendingError()->findOrFail($id);
+
+        $bulkMessage->update(['status' => BulkMessage::STATUS_SENDING]);
     }
 }

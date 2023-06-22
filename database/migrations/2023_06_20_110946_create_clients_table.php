@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('phone');
             $table->date('birthday')->nullable();
+            $table->boolean('is_sms_receive')->default(false);
             $table->timestamps();
             $table->softDeletes();
         });
