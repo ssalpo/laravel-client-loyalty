@@ -27,7 +27,7 @@
         </div>
 
         <div class="mb-3">
-            <TextInput
+            <NumericField
                 label-required
                 label="Телефон"
                 placeholder="Введите номер телефона"
@@ -66,11 +66,12 @@ import {useToast} from "vue-toastification";
 import BsModal from "../BsModal.vue";
 import {IconCirclePlus} from "@tabler/icons-vue";
 import AirDatePicker from "../Form/AirDatePicker.vue";
+import NumericField from "../Form/NumericField.vue";
 
 export default {
     emits: ['success'],
     name: "NewClientModal",
-    components: {AirDatePicker, IconCirclePlus, BsModal, TextInput},
+    components: {NumericField, AirDatePicker, IconCirclePlus, BsModal, TextInput},
     data() {
         return {
             form: new Form({

@@ -15,7 +15,7 @@
                 </div>
 
                 <div class="col col-sm-6 offset-sm-3 mb-3">
-                    <TextInput
+                    <NumericField
                         label="Телефон"
                         label-required
                         placeholder="Введите номер телефона"
@@ -54,9 +54,10 @@ import Card from "../../Shared/Card.vue";
 import TextInput from "../../Shared/Form/TextInput.vue";
 import {useForm, Link} from "@inertiajs/inertia-vue3";
 import AirDatePicker from "../../Shared/Form/AirDatePicker.vue";
+import NumericField from "../../Shared/Form/NumericField.vue";
 
 export default {
-    components: {AirDatePicker, TextInput, Card, PageWrapper, Link},
+    components: {NumericField, AirDatePicker, TextInput, Card, PageWrapper, Link},
     props: ['client'],
     data() {
         return {
