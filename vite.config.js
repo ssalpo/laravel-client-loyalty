@@ -22,7 +22,7 @@ export default defineConfig({
                 scope: "/",
                 id: "/",
                 start_url: '/',
-                name: "Aklify",
+                name: "Loyalty",
                 display: "standalone",
                 orientation: "portrait",
                 icons: [
